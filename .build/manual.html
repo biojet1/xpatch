@@ -1,0 +1,40 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>xpatch.py</title><meta name="generator" content="DocBook XSL Stylesheets V1.74.0"><meta name="keywords" content="xpatch.py, xpatch, patch, xml, python, indioLogic"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="refentry" lang="en"><a name="id94506"></a><div class="titlepage"></div><div class="refnamediv"><h2>Name</h2><p>xpatch.py &#8212; Simple file patcher using XML configuration.</p></div><div class="refsynopsisdiv"><h2>Synopsis</h2><div class="cmdsynopsis"><p><code class="command">python xpatch.py</code>  [-v] [-u] [-m] [  -n  |   --dry-run  ]   <em class="replaceable"><code>CONFIG</code></em>    <em class="replaceable"><code>FILE</code></em>... <p></p></p></div></div><div class="refsect1" lang="en"><a name="id346241"></a><h2>Description</h2><p class="excerpt">
+			<span class="command"><strong>xpatch.py</strong></span> is a <a class="link" href="http://www.python.org" target="_top">Python</a> script
+			to patch file using XML configuration. 
+		</p></div><div class="refsect1" lang="en"><a name="id346182"></a><h2>Arguments</h2><div class="variablelist"><dl><dt><span class="term"><code class="option">-v</code></span></dt><dd><p>Verbose. Show detailed information.</p></dd><dt><span class="term"><code class="option">-u</code></span></dt><dd><p>Unpatch. Bring back to original file.</p></dd><dt><span class="term"><code class="option">-m</code></span></dt><dd><p>Check MD5 digest. If given in configuration file.</p></dd><dt><span class="term"><code class="option">-n</code>, </span><span class="term"><code class="option">--dry-run</code></span></dt><dd><p>Test only dont patch.</p></dd><dt><span class="term"><code class="option"><em class="replaceable"><code>CONFIG</code></em></code></span></dt><dd><p>The XML patch configuration file.</p></dd><dt><span class="term"><code class="option"><em class="replaceable"><code>FILE</code></em></code></span></dt><dd><p>The file to patch.</p></dd></dl></div></div><div class="refsect1" lang="en"><a name="id346154"></a><h2>Configuration File Format</h2><p>
+		</p><div class="blockquote"><blockquote class="blockquote"><pre class="programlisting">
+&lt;!-- Root element tag is "patch" --&gt;
+&lt;!-- @md5sum is the MD5Sum of the target file (optional) --&gt;
+&lt;!-- @name name for the target file --&gt;
+&lt;patch md5sum="937b14db32f07ee47e92a8114ebdbdde" name="gamemd.exe"&gt;
+	&lt;!-- Under root element is the patch entries element, tag is "alter" --&gt;
+	&lt;!-- @id is the patch identifier must be unique --&gt;
+	&lt;!-- @start is the byte offset where to patch, prepend "0x" for hexadecimal number --&gt;
+	&lt;alter id="CP_NotifyLauncher" start="0x9F620"&gt;
+		&lt;!-- "from" element is the orginal bytes starting from @start in hex format --&gt;
+		&lt;from&gt;83 EC 1C 53 55 56 57&lt;/from&gt;
+		&lt;!-- "to" element is the replacement bytes starting from @start --&gt;
+		&lt;!-- the byte length of "to" must not be greater than "from" --&gt;
+		&lt;to&gt;55 8B EC B0 01 5d c3&lt;/to&gt;
+	&lt;/alter&gt;
+	&lt;alter id="CP_IsLauncherRunning" start="0x9F5C0" &gt;
+		&lt;from&gt;51 53 56 68 08 F4 81&lt;/from&gt;
+		&lt;to&gt;55 8B EC B0 01 5d c3&lt;/to&gt;
+	&lt;/alter&gt;
+	&lt;alter id="CP_CheckProtectedData" start="0x9F7A0"&gt;
+		&lt;from&gt;83 EC 10 68 98 F5 81&lt;/from&gt;
+		&lt;to&gt;55 8B EC B0 01 5d c3&lt;/to&gt;
+	&lt;/alter&gt;
+	&lt;alter id="LOGO" start="0x425F20"&gt;
+		&lt;from&gt;45 41 5F 57 57 4C 4F 47 4F 00&lt;/from&gt;
+		&lt;to&gt;00 41 5F 57 57 4C 4F 47 4F 00&lt;/to&gt;
+	&lt;/alter&gt;
+&lt;/patch&gt;
+</pre></blockquote></div><p>
+
+		</p></div><div class="refsect1" lang="en"><a name="copyrigth"></a><h2>Copyright</h2><p>
+			 <span>Copyright (C)</span>
+			 <span><a class="link" href="http://indiologic.sourceforge.net" target="_top">indioLogic</a>.</span>
+			 <span>[ http://indiologic.sourceforge.net ]</span>
+			 <span>All rights reserved.</span>
+		</p></div></div></body></html>

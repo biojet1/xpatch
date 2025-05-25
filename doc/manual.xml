@@ -1,0 +1,81 @@
+<?xml version="1.0" ?>
+<refentry xmlns:xlink="http://www.w3.org/1999/xlink">
+	<info>
+		<keywordset>
+			<keyword>xpatch.py</keyword>
+			<keyword>xpatch</keyword>
+			<keyword>patch</keyword>
+			<keyword>xml</keyword>
+			<keyword>python</keyword>
+			<keyword>indioLogic</keyword>
+		</keywordset>
+	</info>
+	<refmeta>
+		<refentrytitle>xpatch.py</refentrytitle>
+		<manvolnum>0</manvolnum>
+	</refmeta>
+	<refnamediv>
+		<refname>xpatch.py</refname>
+		<refpurpose>Simple file patcher using XML configuration.</refpurpose>
+	</refnamediv>
+	<refsynopsisdiv>
+		<xi:include href="../.build/cmdref.xml" xpointer="xpointer(refentry/refsynopsisdiv/*)" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	</refsynopsisdiv>
+	<refsect1>
+		<title>Description</title>
+		<para role="excerpt">
+			<command>xpatch.py</command> is a <link xlink:href='http://www.python.org'>Python</link> script
+			to patch file using XML configuration. 
+		</para>
+	</refsect1>
+	<refsect1>
+		<title>Arguments</title>
+		<xi:include href="../.build/cmdref.xml" xpointer="xpointer(refentry/refsect/*)" xmlns:xi="http://www.w3.org/2001/XInclude" />
+	</refsect1>
+	<refsect1>
+		<title>Configuration File Format</title>
+		<para>
+		<blockquote>
+<programlisting><![CDATA[
+<!-- Root element tag is "patch" -->
+<!-- @md5sum is the MD5Sum of the target file (optional) -->
+<!-- @name name for the target file -->
+<patch md5sum="937b14db32f07ee47e92a8114ebdbdde" name="gamemd.exe">
+	<!-- Under root element is the patch entries element, tag is "alter" -->
+	<!-- @id is the patch identifier must be unique -->
+	<!-- @start is the byte offset where to patch, prepend "0x" for hexadecimal number -->
+	<alter id="CP_NotifyLauncher" start="0x9F620">
+		<!-- "from" element is the orginal bytes starting from @start in hex format -->
+		<from>83 EC 1C 53 55 56 57</from>
+		<!-- "to" element is the replacement bytes starting from @start -->
+		<!-- the byte length of "to" must not be greater than "from" -->
+		<to>55 8B EC B0 01 5d c3</to>
+	</alter>
+	<alter id="CP_IsLauncherRunning" start="0x9F5C0" >
+		<from>51 53 56 68 08 F4 81</from>
+		<to>55 8B EC B0 01 5d c3</to>
+	</alter>
+	<alter id="CP_CheckProtectedData" start="0x9F7A0">
+		<from>83 EC 10 68 98 F5 81</from>
+		<to>55 8B EC B0 01 5d c3</to>
+	</alter>
+	<alter id="LOGO" start="0x425F20">
+		<from>45 41 5F 57 57 4C 4F 47 4F 00</from>
+		<to>00 41 5F 57 57 4C 4F 47 4F 00</to>
+	</alter>
+</patch>
+]]></programlisting>
+
+		</blockquote>
+
+		</para>
+	</refsect1>	<refsect1 id="copyrigth">
+		<title>Copyright</title>
+		<para>
+			 <phrase>Copyright (C)</phrase>
+			 <phrase><link xlink:href="http://indiologic.sourceforge.net">indioLogic</link>.</phrase>
+			 <phrase>[ http://indiologic.sourceforge.net ]</phrase>
+			 <phrase>All rights reserved.</phrase>
+		</para>
+	</refsect1>
+</refentry>
