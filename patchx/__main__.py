@@ -56,12 +56,14 @@ class XPatch(Main):
     # Command options
     dry_run: bool = flag("-n", "--dry-run", help="Test only, don't actually patch")
     un_patch: bool = flag("-u", help="Unpatch instead of patch")
-    verbose: bool = flag("-v", help="Verbose output")
+    # verbose: bool = flag("-v", help="Verbose output")
     verify: bool = flag("-m", help="Verify MD5 digest if provided")
     patch_file: Path = arg("PATCH_FILE", help="XML patch file")
-    target_files: List[Path] = arg("TARGET_FILES", nargs="+", help="Files to patch")
+    target_files: "list[Path]" = arg(
+        "TARGET", nargs="+", help="Files to patch", type=Path
+    )
 
-    def patch_db(self, patfile: Path) -> tuple[Dict[str, str], List[Dict[str, Any]]]:
+    def patch_db(self, patfile: Path):
         """Parse patch XML file"""
 
         def data_of(cur, name: str) -> bytes:
@@ -118,7 +120,7 @@ class XPatch(Main):
 
         return meta, patches
 
-    def apply_patch(self, patches: List[Dict[str, Any]], target: Path) -> None:
+    def apply_patch(self, patches: "List[Dict[str, Any]]", target: Path) -> None:
         """Apply patches to target file"""
         use = 0
         with target.open("rb") as f:
@@ -161,7 +163,7 @@ class XPatch(Main):
                 if not check_md5(target, meta["md5"]):
                     continue
 
-            self.apply_patch(patches, Path(target))
+            self.apply_patch(patches, (target))
 
             # Verify MD5 after unpatching if requested
             if not self.dry_run and self.un_patch and self.verify and meta["md5"]:
