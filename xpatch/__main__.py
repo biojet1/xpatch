@@ -8,7 +8,7 @@ from pathlib import Path
 from xml.dom.minidom import parse
 from .cliskel import Main, arg, flag
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 srx = re.compile(r"\s+")
 
@@ -56,7 +56,7 @@ class XPatch(Main):
     # Command options
     dry_run: bool = flag("-n", "--dry-run", help="Test only, don't actually patch")
     un_patch: bool = flag("-u", help="Unpatch instead of patch")
-    # verbose: bool = flag("-v", help="Verbose output")
+    _version = flag("version", action="version", version=__version__)
     verify: bool = flag("-m", help="Verify MD5 digest if provided")
     patch_file: Path = arg("PATCH_FILE", help="XML patch file")
     target_files: "list[Path]" = arg(

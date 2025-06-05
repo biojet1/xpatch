@@ -1,13 +1,13 @@
-# **PatchX - XML-Based Binary Patching Tool**
+# **XPatch** - XML-Based Binary Patching Tool
 
-**PatchX** is a command-line tool for applying binary patches to files using XML-based patch definitions. It supports patching, unpatching (reverting changes), and file integrity verification via MD5 checksums.
+**XPatch** is a command-line tool that lets you apply binary patches to files using XML patch definitions. It can patch files, undo those changes, and check file integrity with MD5 checksums
 
 ## **Features**
 
-✅ **XML Patch Definitions** – Define binary patches in XML for precise file modifications.  
-✅ **Dry Run Mode** – Test patches before applying them.  
-✅ **Unpatch Support** – Revert applied patches when needed.  
-✅ **MD5 Verification** – Ensure file integrity before and after patching.
+✅ **XML Patch Definitions** : Define binary patches in XML for precise file modifications.  
+✅ **Dry Run Mode** : Check if patches work before applying them.  
+✅ **Unpatch Support** : Revert applied patches when needed.  
+✅ **MD5 Verification** : Ensure file integrity before and after patching.
 
 ---
 
@@ -16,7 +16,7 @@
 ### **Basic Patching**
 
 ```bash
-patchx PATCH_FILE.xml TARGET_FILE [OPTIONS]
+xpatch PATCH_FILE.xml TARGET_FILE [OPTIONS]
 ```
 
 ### **Options**
@@ -64,7 +64,7 @@ Example patch file (`example.xml`):
 ### **1. Apply a Patch**
 
 ```bash
-patchx example.xml target.bin -v -m
+xpatch example.xml target.bin -v -m
 ```
 
 - Verifies `target.bin` matches the expected MD5 (`md5sum` in XML).
@@ -74,7 +74,7 @@ patchx example.xml target.bin -v -m
 ### **2. Dry Run (Test Patch Without Applying)**
 
 ```bash
-patchx example.xml target.bin -n
+xpatch example.xml target.bin -n
 ```
 
 - Checks if the patch is applicable without modifying the file.
@@ -82,11 +82,11 @@ patchx example.xml target.bin -n
 ### **3. Unpatch (Revert Changes)**
 
 ```bash
-patchx example.xml target.bin -u
+xpatch example.xml target.bin -u
 ```
 
 - Reverts the changes made by `example.xml`.
 
 ---
 
-**PatchX** – The flexible binary patching tool. 🔧🔗
+**XPatch** : The flexible binary patching tool. 🔧🔗

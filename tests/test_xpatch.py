@@ -9,15 +9,12 @@ import shutil
 import sys
 import xml.etree.ElementTree as ET
 
-# Path to the main script (adjust if needed)
-# PATCHX_SCRIPT = Path(__file__).parent.parent / "patchx" / "__main__.py"
 
-
-class TestPatchX(unittest.TestCase):
+class TestXPatch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Create test files and directories"""
-        cls.test_dir = Path(tempfile.mkdtemp(prefix="patchx_test_"))
+        cls.test_dir = Path(tempfile.mkdtemp(prefix="xpatch_test_"))
         print(f"\nTest directory: {cls.test_dir}")
 
         # Create test files
@@ -56,9 +53,9 @@ class TestPatchX(unittest.TestCase):
         """Calculate MD5 hash of a file"""
         return hashlib.md5(file_path.read_bytes()).hexdigest()
 
-    def run_patchx(self, *args, expect_success=True):
-        """Run patchx command and return output"""
-        cmd_args = ["python", "-m", "patchx"] + [str(arg) for arg in args]
+    def run_xpatch(self, *args, expect_success=True):
+        """Run xpatch command and return output"""
+        cmd_args = ["python", "-m", "xpatch"] + [str(arg) for arg in args]
         print(f"\nExecuting: {' '.join(cmd_args)}")
 
         result = subprocess.run(
@@ -85,7 +82,7 @@ class TestPatchX(unittest.TestCase):
         shutil.copy2(self.original_file, test_file)
 
         # Apply patch
-        self.run_patchx(self.patch_file, test_file)
+        self.run_xpatch(self.patch_file, test_file)
 
         # Verify file was patched correctly
         self.assertEqual(test_file.read_bytes(), self.patched_content)
@@ -97,7 +94,7 @@ class TestPatchX(unittest.TestCase):
         shutil.copy2(self.original_file, test_file)
 
         # Run with dry mode
-        output = self.run_patchx(self.patch_file, test_file, "-n")
+        output = self.run_xpatch(self.patch_file, test_file, "-n")
 
         # Verify file wasn't modified
         self.assertEqual(test_file.read_bytes(), self.original_content)
@@ -112,11 +109,11 @@ class TestPatchX(unittest.TestCase):
         shutil.copy2(self.original_file, test_file)
 
         # First apply patch
-        self.run_patchx(self.patch_file, test_file)
+        self.run_xpatch(self.patch_file, test_file)
         self.assertEqual(test_file.read_bytes(), self.patched_content)
 
         # Then unpatch
-        self.run_patchx(self.patch_file, test_file, "-u")
+        self.run_xpatch(self.patch_file, test_file, "-u")
 
         # Should be back to original
         self.assertEqual(test_file.read_bytes(), self.original_content)
@@ -128,14 +125,14 @@ class TestPatchX(unittest.TestCase):
         shutil.copy2(self.original_file, test_file)
 
         # Should work with correct MD5
-        self.run_patchx(self.patch_file, test_file, "-m")
+        self.run_xpatch(self.patch_file, test_file, "-m")
 
         # Modify file to break MD5
         test_file.write_bytes(b"Modified!!")
 
         # Should fail verification
         with self.assertRaises(AssertionError):
-            self.run_patchx(self.patch_file, test_file, "-m", expect_success=False)
+            self.run_xpatch(self.patch_file, test_file, "-m", expect_success=False)
 
     # @unittest.skip("Enable to test invalid patch")
     def test_invalid_patch(self):
@@ -153,7 +150,7 @@ class TestPatchX(unittest.TestCase):
 
         # Should fail to apply
         with self.assertRaises(AssertionError):
-            self.run_patchx(invalid_patch, test_file, expect_success=False)
+            self.run_xpatch(invalid_patch, test_file, expect_success=False)
 
 
 if __name__ == "__main__":
