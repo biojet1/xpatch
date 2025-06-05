@@ -8,7 +8,7 @@ from pathlib import Path
 from xml.dom.minidom import parse
 from .cliskel import Main, arg, flag
 
-__version__ = "1.1.0"
+__version__ = "1.2.0"
 
 srx = re.compile(r"\s+")
 
